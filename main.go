@@ -745,10 +745,11 @@ func menupinjaman(nData *int, nPeminjam *int) {
 	fmt.Println("||===================||")
 	fmt.Println("1. \U0001f4da\U0001f504 Peminjaman Buku")
 	fmt.Println("2. \U0001f4cb Daftar Buku Dipinjam")
-	fmt.Println("3. \U0001f50d Pencarian Data pinjaman")
-	fmt.Println("4. \U00002795 Perpanjangan Peminjaman")
-	fmt.Println("5. \U0001f504 Pengembalian Buku")
-	fmt.Println("6. \U0000fe0f Kembali")
+	fmt.Println("3. \U0001f4cb Rekomendasi 5 Buku Terfavorit")
+	fmt.Println("4. \U0001f50d Pencarian Data pinjaman")
+	fmt.Println("5. \U00002795 Perpanjangan Peminjaman")
+	fmt.Println("6. \U0001f504 Pengembalian Buku")
+	fmt.Println("7. \U0000fe0f Kembali")
 	fmt.Print("Pilihan Anda : ")
 	fmt.Scan(&pilih)
 	switch pilih {
@@ -757,12 +758,14 @@ func menupinjaman(nData *int, nPeminjam *int) {
 	case 2:
 		datapinjaman(&*nData, &*nPeminjam)
 	case 3:
-		menucaridatapinjaman(&*nData, &*nPeminjam)
+		Terfavorit(&*nData, &*nPeminjam)
 	case 4:
-		perpanjangan(&*nData, &*nPeminjam)
+		menucaridatapinjaman(&*nData, &*nPeminjam)
 	case 5:
-		menupengembalian(&*nData, &*nPeminjam)
+		perpanjangan(&*nData, &*nPeminjam)
 	case 6:
+		menupengembalian(&*nData, &*nPeminjam)
+	case 7:
 		menuadmin(&*nData, &*nPeminjam)
 	default:
 		fmt.Println("Maaf nomor yang anda pilih tidak ada, silahkan ketik ulang")
@@ -907,7 +910,7 @@ func pinjaman(nData *int, nPeminjam *int) {
 	var data, i int
 	cetakdatabuku(&*nData, &*nPeminjam)
 	fmt.Print("\nNama: ")
-	fmt.Scan(&nama)
+	inputtext(&nama)
 	if ceknamapeminjam(nPeminjam, nama) {
 		fmt.Println("Maaf, nama sudah dimiliki orang lain silahkan untuk menginput nama lain")
 		jedawaktu(5)
@@ -932,6 +935,7 @@ func pinjaman(nData *int, nPeminjam *int) {
 				tarifharga(*nPeminjam)
 				strukPeminjaman(datapeminjam[*nPeminjam])
 				*nPeminjam += 1
+				pengurutan(*nData)
 				menuadmin(&*nData, &*nPeminjam)
 			}
 		}
@@ -966,9 +970,10 @@ func tarifharga(data int) {
 func inputjudul(nData *int, nPeminjam *int, judul *string, i *int, data int) {
 	var pilih int
 	fmt.Print("Judul buku yang akan dipinjam : ")
-	fmt.Scan(&*judul)
+	inputtext(&*judul)
 	if cekjudul(*nData, *judul) && item[mencaridata(*nData, *judul)].stok > 0 {
 		datapeminjam[*nPeminjam].Buku[*i] = *judul
+		item[mencaridata(*nData, *judul)].rankterpinjam += 1
 	} else if *judul != "." {
 		fmt.Println("Maaf, judul yang anda masukkan tidak ada")
 		fmt.Println("Apakah anda ingin menginputkan kembali?")
@@ -1166,16 +1171,28 @@ func cetakdatapeminjam(nPeminjam int, data int) {
 	fmt.Println("_______________________________________________")
 }
 
-func terfavorit(nData, nPeminjam int) {
-	if nPeminjam == 0 {
-		for i := 0; i < 5; i++ {
-			cetakbuku(i)
-		}
-	} else {
-		for i:=0;i<nData;i++ {
-			
+func pengurutan(nData int) {
+	for i := 0; i < nData-1; i++ {
+		for j := 0; j < nData-i-1; j++ {
+			if item[j].rankterpinjam < item[j+1].rankterpinjam {
+				item[j], item[j+1] = item[j+1], item[j]
+			}
 		}
 	}
+}
+
+func Terfavorit(nData, nPeminjam *int) {
+	cls()
+	var wait string
+	fmt.Println("||==============================||")
+	fmt.Println("||   REKOMENDASI 5 TERFAVORIT   ||")
+	fmt.Println("||==============================||")
+	for i:=0;i < 5; i++ {
+		cetakbuku(i)
+	}
+	fmt.Print("Masukkan apa saja untuk lanjut...")
+	fmt.Scan(&wait)
+	menupinjaman(&*nData,&*nPeminjam)
 }
 
 // ! ===============================================
@@ -1267,7 +1284,7 @@ func cetakStruk(p PinjamanBuku, namaFile string) error {
 	if err != nil {
 		return err
 	}
-	_, err = fmt.Fprintf(file, "========Struk Peminjaman=======\n")
+	_, err = fmt.Fprintf(file, "======= Struk Peminjaman ======\n")
 	if err != nil {
 		return err
 	}
