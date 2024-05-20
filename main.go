@@ -1,3 +1,19 @@
+/*
+
+	============================================
+	Progres pengerjaan tubes praktikum alpro
+	Kelompok 11
+	DS-47-03
+	Anggota:
+	-	Fauzan Ahsanudin Alfikri (103052300003)
+	-	Risma Febriyanti (103052300111)
+	============================================
+	Jobdesk
+	Fauzan: Pembuatan fungsi dan pMenudur lanjutan
+	Risma: Pembuatan kategori menu dsb
+
+*/
+
 package main
 
 import (
@@ -5,9 +21,13 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
-	"strings"
 	"time"
 )
+
+const (
+	width    = 30
+	duration = 3 * time.Second
+) // ! const untuk hiasan
 
 type buku struct {
 	judul, genre, penulis, penerbit, Status string
@@ -130,7 +150,6 @@ func dummy(nData *int) {
 func main() {
 	var nData, nPeminjam int
 
-	// animationteks()
 	dummy(&nData)
 	menu(&nData, &nPeminjam)
 }
@@ -141,9 +160,7 @@ func menu(nData *int, nPeminjam *int) { // ? menampilkan menu
 	var pilih int
 
 	cls()
-	fmt.Println("||====================||")
-	fmt.Println("||        MENU        ||")
-	fmt.Println("||====================||")
+	logoaplikasi()
 	fmt.Println("1. \U0001F4BB Login")
 	fmt.Println("2. \U000023F9  End")
 	fmt.Print("Pilihan Anda : ")
@@ -165,9 +182,7 @@ func menu(nData *int, nPeminjam *int) { // ? menampilkan menu
 func menuadmin(nData *int, nPeminjam *int) {
 	cls()
 	var pilih int
-	fmt.Println("||========================================||")
-	fmt.Println("|| PENGELOLAAN PINJAMAN BUKU PERPUSTAKAAN ||")
-	fmt.Println("||========================================||")
+	headerMenuAdmin()
 	fmt.Println(" 1. \U0001F4DA Data buku")
 	fmt.Println(" 2. \U0001F4DD Data peminjaman")
 	fmt.Println(" 3. \U0001F50D Panduan aplikasi")
@@ -199,9 +214,7 @@ func Login(nData *int, nPeminjam *int) { // ? Procedure untuk login
 	var user, pw string
 	us = false
 	pws = false
-	fmt.Println("||===================||")
-	fmt.Println("||    LOGIN ADMIN    ||")
-	fmt.Println("||===================||")
+	headerLogin()
 	fmt.Print("Masukkan Username Admin Anda : ")
 	fmt.Scan(&user)
 	fmt.Print("Masukkan Password Admin Anda : ")
@@ -240,9 +253,7 @@ func Login(nData *int, nPeminjam *int) { // ? Procedure untuk login
 func menudatabuku(nData *int, nPeminjam *int) { // ? Procedure print output menu data buku
 	cls()
 	var pilih int
-	fmt.Println("||===================||")
-	fmt.Println("||     DATA BUKU     ||")
-	fmt.Println("||===================||")
+	headerDatabuku()
 	fmt.Println("1. \U0001F4D6 Lihat data buku")
 	fmt.Println("2. \U0001f58a Edit data buku")
 	fmt.Println("3. \U000025C0 Kembali")
@@ -288,9 +299,7 @@ func databuku(nData *int, nPeminjam *int) { // ? Procedure melihat data buku apa
 			databuku(&*nData, &*nPeminjam)
 		}
 	} else {
-		fmt.Println("||===================||")
-		fmt.Println("||     DATA BUKU     ||")
-		fmt.Println("||===================||")
+		headerDatabuku()
 		fmt.Println("1. \U0001f50d Cari data buku")
 		fmt.Println("2. \U0001f310 Menampilkan semua data buku")
 		fmt.Println("3. \U000025C0 Kembali ke menu")
@@ -317,9 +326,7 @@ func databuku(nData *int, nPeminjam *int) { // ? Procedure melihat data buku apa
 func menucariData(nData *int, nPeminjam *int) {
 	cls()
 	var pilih int
-	fmt.Println("||=====================||")
-	fmt.Println("||    CARI DATA BUKU   ||")
-	fmt.Println("||=====================||")
+	headerCariDataBuku()
 	fmt.Println("1. \U0001f50d Cari Judul")
 	fmt.Println("2. \U0001f50d\U0001f194 Cari Kata Kunci")
 	fmt.Println("3. \U000025C0 Kembali")
@@ -541,9 +548,7 @@ func convertkategori(i int) string { // ? Function mengembalikan var kategori in
 func menuMengedit(nData *int, nPeminjam *int) { // ? Procedure menu edit
 	cls()
 	var pilih int
-	fmt.Println("||==================||")
-	fmt.Println("||  EDIT DATA BUKU  ||")
-	fmt.Println("||==================||")
+	headerEditDataBuku()
 	fmt.Println("1. \U0001F539 Tambah data buku")
 	fmt.Println("2. \U0001F53B Hapus data buku")
 	fmt.Println("3. \U000025C0 Kembali")
@@ -907,7 +912,7 @@ func perpanjangan(nData *int, nPeminjam *int) {
 func pinjaman(nData *int, nPeminjam *int) {
 	cls()
 	var judul, nama string
-	var data, i int
+	var data, i, pilihan int
 	cetakdatabuku(&*nData, &*nPeminjam)
 	fmt.Print("\nNama: ")
 	inputtext(&nama)
@@ -916,11 +921,11 @@ func pinjaman(nData *int, nPeminjam *int) {
 		jedawaktu(5)
 		pinjaman(&*nData, &*nPeminjam)
 	} else {
-		datapeminjam[*nPeminjam].Namapeminjam = nama
-		datapeminjam[*nPeminjam].NomorPeminjaman = *nPeminjam + 1
 		fmt.Print("\nMau pinjam berapa buku (MAKS 5 Buku): ")
 		fmt.Scan(&data)
 		if data <= 5 {
+			datapeminjam[*nPeminjam].Namapeminjam = nama
+			datapeminjam[*nPeminjam].NomorPeminjaman = *nPeminjam + 1
 			for i < data {
 				inputjudul(&*nData, &*nPeminjam, &judul, &i, data)
 				datapeminjam[*nPeminjam].totalBukuDipinjam += 1
@@ -937,6 +942,18 @@ func pinjaman(nData *int, nPeminjam *int) {
 				*nPeminjam += 1
 				pengurutan(*nData)
 				menuadmin(&*nData, &*nPeminjam)
+			}
+		} else {
+			cls()
+			fmt.Println("Maaf anda meminjam lebih dari batas")
+			fmt.Println("Apakah anda ingin menginput kembali?")
+			fmt.Println("1. Iya")
+			fmt.Println("2. Tidak,Kembali saja")
+			switch pilihan {
+			case 1:
+				pinjaman(&*nData, &*nPeminjam)
+			case 2:
+				menupinjaman(&*nData, &*nPeminjam)
 			}
 		}
 	}
@@ -974,8 +991,9 @@ func inputjudul(nData *int, nPeminjam *int, judul *string, i *int, data int) {
 	if cekjudul(*nData, *judul) && item[mencaridata(*nData, *judul)].stok > 0 {
 		datapeminjam[*nPeminjam].Buku[*i] = *judul
 		item[mencaridata(*nData, *judul)].rankterpinjam += 1
+		item[mencaridata(*nData,*judul)].stok -= 1
 	} else if *judul != "." {
-		fmt.Println("Maaf, judul yang anda masukkan tidak ada")
+		fmt.Println("Maaf, judul yang anda masukkan tidak ada/sudah habis stock")
 		fmt.Println("Apakah anda ingin menginputkan kembali?")
 		fmt.Println("1. \U00002705 Iya")
 		fmt.Println("2. \U0000274c Tidak")
@@ -985,6 +1003,8 @@ func inputjudul(nData *int, nPeminjam *int, judul *string, i *int, data int) {
 		case 1:
 			inputjudul(&*nData, &*nPeminjam, &*judul, &*i, data)
 		case 2:
+			item[mencaridata(*nData, *judul)].rankterpinjam -= *i
+			item[mencaridata(*nData,*judul)].stok -= *i
 			*i = data + 1
 		}
 	}
@@ -1187,12 +1207,12 @@ func Terfavorit(nData, nPeminjam *int) {
 	fmt.Println("||==============================||")
 	fmt.Println("||   REKOMENDASI 5 TERFAVORIT   ||")
 	fmt.Println("||==============================||")
-	for i:=0;i < 5; i++ {
+	for i := 0; i < 5; i++ {
 		cetakbuku(i)
 	}
 	fmt.Print("Masukkan apa saja untuk lanjut...")
 	fmt.Scan(&wait)
-	menupinjaman(&*nData,&*nPeminjam)
+	menupinjaman(&*nData, &*nPeminjam)
 }
 
 // ! ===============================================
@@ -1232,6 +1252,20 @@ func cls() { // ? Procedure menghapus atau clear terminal dengan package os
 	}
 }
 
+func drawProgressBar(progress float64) {
+	bar := ""
+	pos := int(progress * float64(width))
+	for i := 0; i < width; i++ {
+		if i < pos {
+			bar += "█"
+		} else {
+			bar += " "
+		}
+	}
+	bar += ""
+	fmt.Printf("\r%s %3.0f%%", bar, progress*100)
+}
+
 func loading() { // ? Procedure untuk loadig screen
 	cls()
 	duration := 3 * time.Second
@@ -1240,17 +1274,20 @@ func loading() { // ? Procedure untuk loadig screen
 	fmt.Println("||    ~ Mohon Tunggu Sebentar ~     ||")
 	fmt.Println("||==================================||")
 
-	for start := time.Now(); time.Since(start) < duration; {
-		fmt.Print(".")
-		time.Sleep(250 * time.Millisecond)
-		fmt.Print(".")
-		time.Sleep(250 * time.Millisecond)
-		fmt.Print(".")
-		time.Sleep(250 * time.Millisecond)
-		fmt.Print("\b\b\b   \b\b\b")
-		time.Sleep(250 * time.Millisecond)
+	startTime := time.Now()
+	for {
+		elapsed := time.Since(startTime)
+		progress := elapsed.Seconds() / duration.Seconds()
+		if progress > 1 {
+			progress = 1
+		}
+		drawProgressBar(progress)
+		time.Sleep(100 * time.Millisecond)
+		if progress == 1 {
+			break
+		}
 	}
-	fmt.Println("\nSelesai!")
+	fmt.Println()
 }
 
 func jedawaktu(detik int) { // ? Procedure untuk jeda waktu
@@ -1323,24 +1360,92 @@ func cetakStruk(p PinjamanBuku, namaFile string) error {
 	return err
 }
 
-func jedaanimasi(detik float64) {
-	time.Sleep(time.Duration(detik * float64(time.Second)))
-}
+func logoaplikasi() {
+	// 	░░░░┼░░░░░░░
+	// ░░░░░░░░░░░░
+	// ░░░░░░░░░░░┼
+	// ░░░░░░░░░░░░
+	var logo = []string{
+		"     +   .   *          + .     .    ",
+		"   .         .    ██    .    █     * ",
+		"         +      ██  █       █ █      ",
+		"  *  .        ███    ██   ██  █    . ",
+		"       .    ████   ██████████ █      ",
+		"     +     ████████████████████      ",
+		"  .       ██████████████████████     ",
+		"         ████████████████████████    ",
+		"         ████████    ████    █████   ",
+		"  ▄██████████████████████████████    ",
+		"██████▀▀▀▀██████████████████████     ",
+		"████        ██████████████████       ",
+		"                                     ",
+		"    ┌─┐       ┌─┬┐   ┌┐              ",
+		"    │┼├─┬┬┬─┬┬┤─┤└┬─┐│├┬─┐┌─┐┌─┬┐    ",
+		"    │┌┤┴┤┌┤┼││├─│┌┤┼└┤─┤┼└┤┼└┤│││    ",
+		"    └┘└─┴┘│┌┴─┴─┴─┴──┴┴┴──┴──┴┴─┘    ",
+		"          └┘                         ",
+		"=====================================",
+	}
 
-func animationteks() {
-	text := ``
-	lines := strings.Split(text, "\n")
-	clear := "\033[H\033[2J"
+	maxLen := 0
+	for _, line := range logo {
+		if len(line) > maxLen {
+			maxLen = len(line)
+		}
+	}
 
-	for i := 0; i <= len(lines[0]); i++ {
-		fmt.Print(clear)
-		for _, line := range lines {
-			if i < len(line) {
+	for i := 0; i <= maxLen; i++ {
+		cls()
+		for _, line := range logo {
+			if len(line) > i {
 				fmt.Println(line[:i])
 			} else {
 				fmt.Println(line)
 			}
 		}
-		jedaanimasi(0.02) // Adjust delay here for desired speed
+		time.Sleep(10 * time.Millisecond)
 	}
+}
+
+func headerMenuAdmin() {
+	fmt.Println("  __  __ ___ _  _ _   _     _   ___  __  __ ___ _  _ ")
+	fmt.Println(" |  \\/  | __| \\| | | | |   /_\\ |   \\|  \\/  |_ _| \\| |")
+	fmt.Println(" | |\\/| | _|| .` | |_| |  / _ \\| |) | |\\/| || || .` |")
+	fmt.Println(" |_|  |_|___|_| \\_\\___/  /_/ \\_\\___/|_|  |_|___|_|\\_|")
+	fmt.Println("                                                     ")
+	fmt.Println("======================================================")
+}
+
+func headerDatabuku() {
+	fmt.Println("  ___   _ _____ _     ___ _   _ _  ___   _ ")
+	fmt.Println(" |   \\ /_\\_   _/_\\   | _ ) | | | |/ / | | |")
+	fmt.Println(" | |) / _ \\| |/ _ \\  | _ \\ |_| | ' <| |_| |")
+	fmt.Println(" |___/_/ \\_\\_/_/ \\_\\ |___/\\___/|_|\\_\\\\___/ ")
+	fmt.Println("============================================")
+}
+
+func headerCariDataBuku() {
+	fmt.Println(`
+    ___   _   ___ ___   ___   _ _____ _     ___ _   _ _  ___   _ 
+   / __| /_\ | _ \_ _| |   \ /_\_   _/_\   | _ ) | | | |/ / | | |
+  | (__ / _ \|   /| |  | |) / _ \| |/ _ \  | _ \ |_| | ' <| |_| |
+   \___/_/ \_\_|_\___| |___/_/ \_\_/_/ \_\ |___/\___/|_|\_\\___/ 
+=====================================================================`)
+}
+
+func headerEditDataBuku() {
+	fmt.Println(`
+   ___ ___ ___ _____   ___   _ _____ _     ___ _   _ _  ___   _ 
+   | __|   \_ _|_   _| |   \ /_\_   _/_\   | _ ) | | | |/ / | | |
+   | _|| |) | |  | |   | |) / _ \| |/ _ \  | _ \ |_| | ' <| |_| |
+   |___|___/___| |_|   |___/_/ \_\_/_/ \_\ |___/\___/|_|\_\\___/ 
+====================================================================`)
+}
+
+func headerLogin() {
+	fmt.Println("  _    ___   ___ ___ _  _     _   ___  __  __ ___ _  _ ")
+	fmt.Println(" | |  / _ \\ / __|_ _| \\| |   /_\\ |   \\|  \\/  |_ _| \\| |")
+	fmt.Println(" | |_| (_) | (_ || || .` |  / _ \\| |) | |\\/| || || .` |")
+	fmt.Println(" |____\\___/ \\___|___|_|\\_| /_/ \\_\\___/|_|  |_|___|_|\\_|")
+	fmt.Println("=======================================================")
 }
