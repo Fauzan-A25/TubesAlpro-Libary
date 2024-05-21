@@ -351,7 +351,7 @@ func carijudul(nData *int, nPeminjam *int) {
 	cls()
 	var judul, wait string
 	var pilih int
-	fmt.Print("Masukkan Judul: ")
+	fmt.Print("Masukkan Judul (akhiri dengan spasi (.)): ")
 	inputtext(&judul)
 	fmt.Println()
 	if cekjudul(*nData, judul) {
@@ -584,18 +584,18 @@ func menambahkan(nData *int, nPeminjam *int) { // ? Procedure menambahkan buku k
 func menambahkan2(nData *int, nPeminjam *int, produk, banyakstok *int) { // ? Subs procedure dari procedure menambahkan buku
 	var kategori string
 	var judul string
-	fmt.Print("\n\x1b[36mJUDUL : \x1b[0m")
+	fmt.Print("\n\x1b[36mJUDUL (Akhiri dengan spasi .): \x1b[0m")
 	inputtext(&judul)
 	if cekjudul(*nData, judul) {
 		cls()
 		pilihanmenambah(&*nData, &*nPeminjam, &*produk, &*banyakstok, &judul)
 	} else {
 		item[*nData].judul = judul
-		fmt.Print("\x1b[36mPENULIS : \x1b[0m")
+		fmt.Print("\x1b[36mPENULIS (Akhiri dengan spasi .): \x1b[0m")
 		inputtext(&item[*nData].penulis)
-		fmt.Print("\x1b[36mPENERBIT : \x1b[0m")
+		fmt.Print("\x1b[36mPENERBIT (Akhiri dengan spasi .): \x1b[0m")
 		inputtext(&item[*nData].penerbit)
-		fmt.Print("\x1b[36mGENRE : \x1b[0m")
+		fmt.Print("\x1b[36mGENRE (Akhiri dengan spasi .): \x1b[0m")
 		inputtext(&item[*nData].genre)
 		fmt.Print("\x1b[36mHARGA : \x1b[0m")
 		fmt.Scan(&item[*nData].harga)
@@ -714,7 +714,7 @@ func menghapus(nData *int, nPeminjam *int) { // ? Procedure menghapus data buku 
 		}
 	} else {
 		cetakdatabuku(&*nData, &*nPeminjam)
-		fmt.Print("Masukkan Judul Buku yang akan dihapus: ")
+		fmt.Print("Masukkan Judul Buku yang akan dihapus (Akhiri dengan spasi .): ")
 		inputtext(&judul)
 		if cekjudul(*nData, judul) {
 			simpandata = mencaridata(*nData, judul)
@@ -808,6 +808,7 @@ func menupengembalian(nData *int, nPeminjam *int) {
 
 func pengembalian(nData *int, nPeminjam *int) {
 	cls()
+	var pilih int
 	var nama string
 	var bulan, tahun, tanggal int
 	var denda int
@@ -852,6 +853,17 @@ func pengembalian(nData *int, nPeminjam *int) {
 		} else {
 			strukpembayaran(&denda)
 		}
+	} else {
+		fmt.Println("Maaf Nama peminjam tidak ada")
+		fmt.Println("Silahkan Untuk menginputkan dengan benar")
+		fmt.Println("1. Input kembali")
+		fmt.Println("2. Kembali")
+		switch pilih {
+		case 1:
+			pengembalian(&*nData, &*nPeminjam)
+		case 2:
+			menupengembalian(&*nData, &*nPeminjam)
+		}
 	}
 }
 
@@ -873,20 +885,31 @@ func hilang(nData *int, nPeminjam *int) {
 			}
 		}
 		strukpembayaran(&denda)
+	}else {
+		fmt.Println("Maaf Nama peminjam tidak ada")
+		fmt.Println("Silahkan Untuk menginputkan dengan benar")
+		fmt.Println("1. Input kembali")
+		fmt.Println("2. Kembali")
+		switch pilih {
+		case 1:
+			hilang(&*nData, &*nPeminjam)
+		case 2:
+			menupengembalian(&*nData, &*nPeminjam)
+		}
 	}
 }
 
 func strukpembayaran(tagihan *int) {
 	var bayar int
-	fmt.Print("Silahkan untuk membayar sebanyak ", tagihan, ": ")
+	fmt.Print("Silahkan untuk membayar sebanyak ", *tagihan, ": ")
 	fmt.Scan(&bayar)
 	if bayar == *tagihan {
-		fmt.Print("Lunas")
+		fmt.Println("Lunas")
 	} else if bayar > *tagihan {
-		fmt.Print("Ini kembalian anda: ", bayar-*tagihan)
+		fmt.Println("Ini kembalian anda: ", bayar-*tagihan)
 	} else {
-		fmt.Print("Maaf uang anda kurang: ", *tagihan-bayar)
-		bayar += *tagihan - bayar
+		fmt.Println("Maaf uang anda kurang: ", *tagihan-bayar)
+		bayar = *tagihan - bayar
 		strukpembayaran(&bayar)
 	}
 }
@@ -900,11 +923,11 @@ func perpanjangan(nData *int, nPeminjam *int) {
 		fmt.Print("Masukkan jumlah perpanjangan hari: ")
 		fmt.Scan(&hari)
 		datapeminjam[caridatapeminjam(*nPeminjam, nama)].tarifharga += 5000 * hari
-		if (datapeminjam[caridatapeminjam(*nPeminjam, nama)].TanggalPeminjaman.tanggal + hari) > 31 {
-			datapeminjam[caridatapeminjam(*nPeminjam, nama)].TanggalPeminjaman.tanggal -= 31
-			datapeminjam[caridatapeminjam(*nPeminjam, nama)].TanggalPeminjaman.tanggal += 1
+		if (datapeminjam[caridatapeminjam(*nPeminjam, nama)].TanggalKembali.tanggal + hari) > 31 {
+			datapeminjam[caridatapeminjam(*nPeminjam, nama)].TanggalKembali.tanggal -= 31
+			datapeminjam[caridatapeminjam(*nPeminjam, nama)].TanggalKembali.tanggal += 1
 		} else {
-			datapeminjam[caridatapeminjam(*nPeminjam, nama)].TanggalPeminjaman.tanggal += hari
+			datapeminjam[caridatapeminjam(*nPeminjam, nama)].TanggalKembali.tanggal += hari
 		}
 	}
 }
@@ -914,7 +937,7 @@ func pinjaman(nData *int, nPeminjam *int) {
 	var judul, nama string
 	var data, i, pilihan int
 	cetakdatabuku(&*nData, &*nPeminjam)
-	fmt.Print("\nNama: ")
+	fmt.Print("\nNama (Akhiri dengan spasi .): ")
 	inputtext(&nama)
 	if ceknamapeminjam(nPeminjam, nama) {
 		fmt.Println("Maaf, nama sudah dimiliki orang lain silahkan untuk menginput nama lain")
@@ -928,8 +951,7 @@ func pinjaman(nData *int, nPeminjam *int) {
 			datapeminjam[*nPeminjam].NomorPeminjaman = *nPeminjam + 1
 			for i < data {
 				inputjudul(&*nData, &*nPeminjam, &judul, &i, data)
-				datapeminjam[*nPeminjam].totalBukuDipinjam += 1
-				item[mencaridata(*nData, judul)].stok -= 1
+				datapeminjam[*nPeminjam].totalBukuDipinjam = datapeminjam[*nPeminjam].totalBukuDipinjam + 1
 				i++
 			}
 			if i > data {
@@ -970,29 +992,35 @@ func tarifharga(data int) {
 	} else {
 		datapeminjam[data].tarifharga = hari * 5000
 		datapeminjam[data].TanggalKembali.tanggal += datapeminjam[data].TanggalPeminjaman.tanggal
-		datapeminjam[data].TanggalKembali.tanggal += datapeminjam[data].TanggalPeminjaman.bulan
-		datapeminjam[data].TanggalKembali.tanggal += datapeminjam[data].TanggalPeminjaman.tahun
+		datapeminjam[data].TanggalKembali.bulan += datapeminjam[data].TanggalPeminjaman.bulan
+		datapeminjam[data].TanggalKembali.tahun += datapeminjam[data].TanggalPeminjaman.tahun
 		datapeminjam[data].TanggalKembali.tanggal += hari
 		if datapeminjam[data].TanggalKembali.tanggal > 31 {
 			datapeminjam[data].TanggalKembali.bulan += 1
+			datapeminjam[data].TanggalKembali.tanggal -= 31 
 			if datapeminjam[data].TanggalKembali.bulan > 12 {
 				datapeminjam[data].TanggalKembali.bulan -= 12
 				datapeminjam[data].TanggalKembali.tahun += 1
 			}
 		}
+		strukpembayaran(&datapeminjam[data].tarifharga)
+		datapeminjam[data].tarifharga = 0
 		cls()
 	}
 }
 
 func inputjudul(nData *int, nPeminjam *int, judul *string, i *int, data int) {
 	var pilih int
-	fmt.Print("Judul buku yang akan dipinjam : ")
+	fmt.Print("Judul buku yang akan dipinjam (Akhiri dengan spasi .): ")
+	*judul = ""
 	inputtext(&*judul)
+	fmt.Print(*judul)
 	if cekjudul(*nData, *judul) && item[mencaridata(*nData, *judul)].stok > 0 {
 		datapeminjam[*nPeminjam].Buku[*i] = *judul
 		item[mencaridata(*nData, *judul)].rankterpinjam += 1
-		item[mencaridata(*nData,*judul)].stok -= 1
-	} else if *judul != "." {
+		item[mencaridata(*nData, *judul)].stok -= 1
+	} else {
+		fmt.Println(cekjudul(*nData, *judul)," ",item[mencaridata(*nData, *judul)].stok)
 		fmt.Println("Maaf, judul yang anda masukkan tidak ada/sudah habis stock")
 		fmt.Println("Apakah anda ingin menginputkan kembali?")
 		fmt.Println("1. \U00002705 Iya")
@@ -1004,7 +1032,7 @@ func inputjudul(nData *int, nPeminjam *int, judul *string, i *int, data int) {
 			inputjudul(&*nData, &*nPeminjam, &*judul, &*i, data)
 		case 2:
 			item[mencaridata(*nData, *judul)].rankterpinjam -= *i
-			item[mencaridata(*nData,*judul)].stok -= *i
+			item[mencaridata(*nData, *judul)].stok -= *i
 			*i = data + 1
 		}
 	}
