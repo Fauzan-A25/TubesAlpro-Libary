@@ -14,13 +14,14 @@
 
 */
 
+// Pengembalian, edit buku,edit peminjam
+
 package main
 
 import (
 	"fmt"
 	"os"
 	"os/exec"
-	"runtime"
 	"time"
 )
 
@@ -38,7 +39,7 @@ type buku struct {
 type PinjamanBuku struct {
 	NomorPeminjaman   int
 	Namapeminjam      string
-	Buku              [4]string
+	Buku              [5]string
 	TanggalPeminjaman date
 	TanggalKembali    date
 	Status            string
@@ -70,11 +71,11 @@ func dummy(nData *int) {
 	akun[1].Username = "Imaachan"
 	akun[1].Password = "Gkatauapa"
 
-	akun[2].Username = "Seikiaccount "
-	akun[2].Password = "Alhamdulillah "
+	akun[2].Username = "1"
+	akun[2].Password = "1"
 
-	akun[3].Username = "reikisenpai "
-	akun[3].Password = "Bismillah "
+	akun[3].Username = "reikisenpai"
+	akun[3].Password = "Bismillah"
 
 	item[0].judul = "The Hunger Games "
 	item[1].judul = "Laskar Pelangi "
@@ -158,7 +159,6 @@ func main() {
 
 func menu(nData *int, nPeminjam *int) { // ? menampilkan menu
 	var pilih int
-
 	cls()
 	logoaplikasi()
 	fmt.Println("1. \U0001F4BB Login")
@@ -185,8 +185,7 @@ func menuadmin(nData *int, nPeminjam *int) {
 	headerMenuAdmin()
 	fmt.Println(" 1. \U0001F4DA Data buku")
 	fmt.Println(" 2. \U0001F4DD Data peminjaman")
-	fmt.Println(" 3. \U0001F50D Panduan aplikasi")
-	fmt.Println(" 4. \U000025C0 Log Out")
+	fmt.Println(" 3. \U000025C0 Log Out")
 	fmt.Print("Pilihan Anda : ")
 	fmt.Scan(&pilih)
 	fmt.Println()
@@ -196,8 +195,6 @@ func menuadmin(nData *int, nPeminjam *int) {
 	case 2:
 		menupinjaman(&*nData, &*nPeminjam)
 	case 3:
-		panduan(&*nData, &*nPeminjam)
-	case 4:
 		logout()
 	default:
 		fmt.Println("Maaf nomor yang anda pilih tidak ada, silahkan ketik ulang")
@@ -301,7 +298,7 @@ func databuku(nData *int, nPeminjam *int) { // ? Procedure melihat data buku apa
 		fmt.Println("\x1b[35mMaaf, data buku Anda masih kosong, silahkan untuk menginput dulu data buku Anda\x1b[0m")
 		fmt.Println("1. \U000025B6 Lanjut")
 		fmt.Println("2. \U000025C0 Kembali ke menu")
-		fmt.Print("\x1b[36mPilihan Anda: \x1b[0m")
+		fmt.Print("\x1b[36mPilihan Anda (1/2): \x1b[0m")
 		fmt.Scan(&pilih)
 		switch pilih {
 		case 1:
@@ -381,7 +378,7 @@ func carijudul(nData *int, nPeminjam *int) {
 		fmt.Println("Maaf, Judul yang anda cari tidak ada")
 		fmt.Println("Apakah Anda ingin mencari lagi judul yang lain?")
 		fmt.Println("1. \U000025B6 Ya")
-		fmt.Println("2. \U0001f4dd\U00002795 Tambahkan data buku")
+		fmt.Println("2. \U00002795\U0001f4dd Tambahkan data buku")
 		fmt.Println("3. \U000025C0 Tidak, kembali saja")
 		fmt.Println("Jika buku yang anda cari tidak ada")
 		fmt.Println("Silahkan untuk menambahkan data buku di menu edit buku")
@@ -444,7 +441,7 @@ func carikatakunci(nData *int, nPeminjam *int) {
 		fmt.Println("Apakah Anda ingin mencari lagi key yang lain?")
 		fmt.Println("1. \U000025B6 Ya")
 		fmt.Println("2. \U000025C0 Tidak, kembali saja")
-		fmt.Print("Pilihan anda : ")
+		fmt.Print("Pilihan anda (1/2): ")
 		fmt.Scan(&pilih)
 		switch pilih {
 		case 1:
@@ -548,11 +545,11 @@ func cetakbuku(data int) {
 
 func convertkategori(i int) string { // ? Function mengembalikan var kategori integer menjadi string komik/novel/cerpen/pelajaran
 	if i == 1 {
-		return "\x1b[44m \U0001F4AC Komik\x1b[0m"
-	} else if i == 2 {
-		return "\x1b[41m \U0001F3AD Novel\x1b[0m"
-	} else if i == 3 {
 		return "\x1b[42m \U0001F4C3 Cerpen\x1b[0m"
+	} else if i == 2 {
+		return "\x1b[44m \U0001F4AC Komik\x1b[0m"
+	} else if i == 3 {
+		return "\033[41m \U0001F3AD Novel\x1b[0m"
 	} else if i == 4 {
 		return "\x1b[43m \U0001F3EB Pelajaran : \x1b[0m"
 	} else {
@@ -566,7 +563,8 @@ func menuMengedit(nData *int, nPeminjam *int) { // ? Procedure menu edit
 	headerEditDataBuku()
 	fmt.Println("1. \U0001F539 Tambah data buku")
 	fmt.Println("2. \U0001F53B Hapus data buku")
-	fmt.Println("3. \U000025C0 Kembali")
+	fmt.Println("3. \U0001F53B Edit Buku")
+	fmt.Println("4. \U000025C0 Kembali")
 	fmt.Print("Pilihan Anda : ")
 	fmt.Scan(&pilih)
 	switch pilih {
@@ -575,6 +573,8 @@ func menuMengedit(nData *int, nPeminjam *int) { // ? Procedure menu edit
 	case 2:
 		menghapus(&*nData, &*nPeminjam)
 	case 3:
+		MeditBuku(&*nData, &*nPeminjam)
+	case 4:
 		menudatabuku(&*nData, &*nPeminjam)
 	default:
 		fmt.Println("Maaf nomor yang anda pilih tidak ada, silahkan ketik ulang")
@@ -584,10 +584,220 @@ func menuMengedit(nData *int, nPeminjam *int) { // ? Procedure menu edit
 	}
 }
 
+func MeditBuku(nData, nPeminjam *int) {
+	var judul string
+	var pilih, data int
+	cetakdatabuku(&*nData, &*nPeminjam)
+	fmt.Print("Masukkan judul buku yang ingin di ubah (cth: 'Danur .'):")
+	inputtext(&judul)
+	if cekjudul(*nData, judul) {
+		data = mencaridata(*nData, judul)
+		editBuku(&*nData, &*nPeminjam, data)
+	} else {
+		fmt.Println("Maaf judul buku yang anda masukkan tidak ada")
+		fmt.Println("1. \U000025B6 Input Kembali")
+		fmt.Println("2. \U000025C0 Kembali")
+		fmt.Print("\x1b[36mPilihan Anda (1/2): \x1b[0m")
+		fmt.Scan(&pilih)
+		switch pilih {
+		case 1:
+			MeditBuku(&*nData, &*nPeminjam)
+		case 2:
+			menuMengedit(&*nData, &*nPeminjam)
+		}
+	}
+}
+
+func editBuku(nData, nPeminjam *int, data int) {
+	cls()
+	var pilih int
+	fmt.Println("Pilih apa yang akan di ubah:")
+	fmt.Println("1. Judul Buku")
+	fmt.Println("2. Penulis")
+	fmt.Println("3. Penerbit")
+	fmt.Println("4. Genre")
+	fmt.Println("5. Kategori")
+	fmt.Println("6. Harga")
+	fmt.Println("7. Stok")
+	fmt.Println("8. Key")
+	fmt.Println("9. Semua")
+	fmt.Println("10. Kembali")
+	fmt.Print("Pilihan Anda (1/2/3/4/5/6/7/8/9/10): ")
+	fmt.Scan(&pilih)
+	switch pilih {
+	case 1:
+		editjudul(&*nData, &*nPeminjam, data)
+		editBuku(&*nData, &*nPeminjam, data)
+	case 2:
+		editpenulis(&*nData, &*nPeminjam, data)
+		editBuku(&*nData, &*nPeminjam, data)
+	case 3:
+		editpenerbit(&*nData, &*nPeminjam, data)
+		editBuku(&*nData, &*nPeminjam, data)
+	case 4:
+		editgenre(&*nData, &*nPeminjam, data)
+		editBuku(&*nData, &*nPeminjam, data)
+	case 5:
+		editkategori(&*nData, &*nPeminjam, data)
+		editBuku(&*nData, &*nPeminjam, data)
+	case 6:
+		editharga(&*nData, &*nPeminjam, data)
+		editBuku(&*nData, &*nPeminjam, data)
+	case 7:
+		editstok(&*nData, &*nPeminjam, data)
+		editBuku(&*nData, &*nPeminjam, data)
+	case 8:
+		editkey(&*nData, &*nPeminjam, data)
+		editBuku(&*nData, &*nPeminjam, data)
+	case 9:
+		editjudul(&*nData, &*nPeminjam, data)
+		editpenulis(&*nData, &*nPeminjam, data)
+		editpenerbit(&*nData, &*nPeminjam, data)
+		editgenre(&*nData, &*nPeminjam, data)
+		editkategori(&*nData, &*nPeminjam, data)
+		editharga(&*nData, &*nPeminjam, data)
+		editstok(&*nData, &*nPeminjam, data)
+		editBuku(&*nData, &*nPeminjam, data)
+	case 10:
+		menuMengedit(&*nData, &*nPeminjam)
+	default:
+		fmt.Println("Maaf nomor yang anda pilih tidak ada, silahkan ketik ulang")
+		jedawaktu(3)
+		cls()
+		editBuku(&*nData, &*nPeminjam, data)
+	}
+}
+
+func editjudul(nData, nPeminjam *int, data int) {
+	cls()
+	var ganti string
+	fmt.Print("Masukkan judul yang baru (cth: Villains ./ heroes academia .): ")
+	inputtext(&ganti)
+	item[data].judul = ganti
+	cls()
+	fmt.Println("Buku baru:")
+	cetakbuku(data)
+	jedawaktu(3)
+}
+func editpenulis(nData, nPeminjam *int, data int) {
+	cls()
+	var ganti string
+	fmt.Print("Masukkan nama penulis yang baru (cth: Nakama ./ Watashi wa .): ")
+	inputtext(&ganti)
+	item[data].penulis = ganti
+	cls()
+	fmt.Println("Buku baru:")
+	cetakbuku(data)
+	jedawaktu(3)
+}
+
+func editpenerbit(nData, nPeminjam *int, data int) {
+	cls()
+	var ganti string
+	fmt.Print("Masukkan nama penerbit yang baru (cth: Nvidia ./ Nakama nei .)")
+	inputtext(&ganti)
+	item[data].penerbit = ganti
+	cls()
+	fmt.Println("Buku baru:")
+	cetakbuku(data)
+	jedawaktu(3)
+}
+
+func editgenre(nData, nPeminjam *int, data int) {
+	cls()
+	var ganti string
+	fmt.Print("Masukkan nama genre yang baru (cth: Horor ./ Slice Of Life .): ")
+	inputtext(&ganti)
+	item[data].genre = ganti
+	cls()
+	fmt.Println("Buku baru:")
+	cetakbuku(data)
+	jedawaktu(3)
+}
+
+func editkategori(nData, nPeminjam *int, data int) {
+	cls()
+	var kategori string
+	fmt.Println("\x1b[36mKategori\x1b[0m")
+	fmt.Println("\x1b[42m \U0001F4C3 Cerpen\x1b[0m")
+	fmt.Println("\x1b[44m \U0001F4AC Komik\x1b[0m")
+	fmt.Println("\x1b[41m \U0001F3AD Novel\x1b[0m")
+	fmt.Println("\x1b[43m \U0001F3EB Pelajaran \x1b[0m")
+	fmt.Print("Pilihan Anda (Komik/Novel/Cerpen/Pelajaran): ")
+	fmt.Scan(&kategori)
+	switch kategori {
+	case "Cerpen":
+		item[data].kategori = 1
+		fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F4C3 Cerpen\x1b[0m")
+	case "Komik":
+		item[data].kategori = 2
+		fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F4AC Komik\x1b[0m")
+	case "Novel":
+		item[data].kategori = 3
+		fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F3AD Novel\x1b[0m")
+	case "Pelajaran":
+		item[data].kategori = 4
+		fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F3EB Pelajaran\x1b[0m")
+	}
+	cls()
+	fmt.Println("Buku baru:")
+	cetakbuku(data)
+	jedawaktu(3)
+}
+
+func editharga(nData, nPeminjam *int, data int) {
+	cls()
+	var ganti int
+	fmt.Print("Masukkan Harga baru (cth: '2000')")
+	fmt.Scan(&ganti)
+	item[data].harga = ganti
+	cls()
+	fmt.Println("Buku baru:")
+	cetakbuku(data)
+	jedawaktu(3)
+}
+
+func editstok(nData, nPeminjam *int, data int) {
+	cls()
+	var ganti int
+	fmt.Print("Masukkan stok yang baru (cth: '1')")
+	fmt.Scan(&ganti)
+	item[data].stok = ganti
+	cls()
+	fmt.Println("Buku baru:")
+	cetakbuku(data)
+	jedawaktu(3)
+}
+
+func editkey(nData, nPeminjam *int, data int) {
+	var pilih int
+	var baru string
+	for i := 0; i < 3; i++ {
+		cls()
+		fmt.Println(i, ". ", item[data].key[i])
+		fmt.Println("Apakah anda mau mengubahnya:")
+		fmt.Println("1. Iya")
+		fmt.Println("2. Tidak")
+		fmt.Println("Pilihan anda(1/2):")
+		fmt.Scan(&pilih)
+		if pilih == 1 {
+			cls()
+			fmt.Print("Masukkan Key anda yang baru (cth: walawe): ")
+			fmt.Scan(&baru)
+			item[data].key[i] = baru
+		} else {
+
+		}
+	}
+	fmt.Println("Buku baru:")
+	cetakbuku(data)
+	jedawaktu(3)
+}
+
 func menambahkan(nData *int, nPeminjam *int) { // ? Procedure menambahkan buku kedalam data
 	cls()
 	var banyakstok, produk int
-	fmt.Print("Masukkan jumlah buku yang akan ditambahkan: ")
+	fmt.Print("Masukkan jumlah buku yang akan ditambahkan (1/2/3/dsb): ")
 	fmt.Scan(&banyakstok)
 	for produk = 0; produk < banyakstok; produk++ {
 		menambahkan2(&*nData, &*nPeminjam, &produk, &banyakstok)
@@ -615,22 +825,22 @@ func menambahkan2(nData *int, nPeminjam *int, produk, banyakstok *int) { // ? Su
 		fmt.Print("\x1b[36mHARGA : \x1b[0m")
 		fmt.Scan(&item[*nData].harga)
 		fmt.Println("\x1b[36mKategori\x1b[0m")
+		fmt.Println("\x1b[42m \U0001F4C3 Cerpen\x1b[0m")
 		fmt.Println("\x1b[44m \U0001F4AC Komik\x1b[0m")
 		fmt.Println("\x1b[41m \U0001F3AD Novel\x1b[0m")
-		fmt.Println("\x1b[42m \U0001F4C3 Cerpen\x1b[0m")
 		fmt.Println("\x1b[43m \U0001F3EB Pelajaran \x1b[0m")
 		fmt.Print("Pilihan Anda : ")
 		fmt.Scan(&kategori)
 		switch kategori {
-		case "Komik":
+		case "Cerpen":
 			item[*nData].kategori = 1
+			fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F4C3 Cerpen\x1b[0m")
+		case "Komik":
+			item[*nData].kategori = 2
 			fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F4AC Komik\x1b[0m")
 		case "Novel":
-			item[*nData].kategori = 2
-			fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F3AD Novel\x1b[0m")
-		case "Cerpen":
 			item[*nData].kategori = 3
-			fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F4C3 Cerpen\x1b[0m")
+			fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F3AD Novel\x1b[0m")
 		case "Pelajaran":
 			item[*nData].kategori = 4
 			fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F3EB Pelajaran\x1b[0m")
@@ -652,6 +862,7 @@ func menambahkan2(nData *int, nPeminjam *int, produk, banyakstok *int) { // ? Su
 }
 
 func inputtext(text *string) {
+	*text = ""
 	var temp string
 	for temp != "." {
 		fmt.Scan(&temp)
@@ -679,7 +890,7 @@ func pilihanmenambah(nData *int, nPeminjam *int, produk, banyakstok *int, judul 
 	fmt.Println("Apakah Anda hanya ingin menambahkan stoknya?")
 	fmt.Println("1. \U000025B6 Ya")
 	fmt.Println("2. \U000025C0 Tidak, kembali ke menu")
-	fmt.Print("Pilihan Anda : ")
+	fmt.Print("Pilihan Anda (1/2) : ")
 	fmt.Scan(&pilih)
 	switch pilih {
 	case 1:
@@ -753,7 +964,7 @@ func menghapus(nData *int, nPeminjam *int) { // ? Procedure menghapus data buku 
 			fmt.Println("Maaf judul buku yang anda masukkan tidak ada")
 			fmt.Println("1. \U000025B6 Input Kembali")
 			fmt.Println("2. \U000025C0 Kembali")
-			fmt.Print("\x1b[36mPilihan Anda: \x1b[0m")
+			fmt.Print("\x1b[36mPilihan Anda (1/2): \x1b[0m")
 			fmt.Scan(&pilih)
 			switch pilih {
 			case 1:
@@ -781,28 +992,34 @@ func menupinjaman(nData *int, nPeminjam *int) {
 	fmt.Println("||   Menu Pinjaman   ||")
 	fmt.Println("||===================||")
 	fmt.Println("1. \U0001f4da\U0001f504 Peminjaman Buku")
-	fmt.Println("2. \U0001f4cb Daftar Buku Dipinjam")
-	fmt.Println("3. \U0001f4cb Rekomendasi 5 Buku Terfavorit")
-	fmt.Println("4. \U0001f50d Pencarian Data pinjaman")
-	fmt.Println("5. \U00002795 Perpanjangan Peminjaman")
-	fmt.Println("6. \U0001f504 Pengembalian Buku")
-	fmt.Println("7. \U0000fe0f Kembali")
+	fmt.Println("2. \U0001f4da Hapus Data Peminjaman Buku")
+	fmt.Println("3. \U0001f4cb Daftar Buku Dipinjam")
+	fmt.Println("4. \U0001f4cb Rekomendasi 5 Buku Terfavorit")
+	fmt.Println("5. \U0001f50d Pencarian Data pinjaman")
+	fmt.Println("6. \U00002795 Perpanjangan Peminjaman")
+	fmt.Println("7. \U0001f504 Pengembalian Buku")
+	fmt.Println("8. \U0001f504 Edit data peminjam")
+	fmt.Println("9. \U000025C0 Kembali")
 	fmt.Print("Pilihan Anda : ")
 	fmt.Scan(&pilih)
 	switch pilih {
 	case 1:
 		pinjaman(&*nData, &*nPeminjam)
 	case 2:
-		datapinjaman(&*nData, &*nPeminjam)
+		hapusdatapeminjam(&*nData, &*nPeminjam)
 	case 3:
-		Terfavorit(&*nData, &*nPeminjam)
+		datapinjaman(&*nData, &*nPeminjam)
 	case 4:
-		menucaridatapinjaman(&*nData, &*nPeminjam)
+		Terfavorit(&*nData, &*nPeminjam)
 	case 5:
-		perpanjangan(&*nData, &*nPeminjam)
+		menucaridatapinjaman(&*nData, &*nPeminjam)
 	case 6:
-		menupengembalian(&*nData, &*nPeminjam)
+		perpanjangan(&*nData, &*nPeminjam)
 	case 7:
+		menupengembalian(&*nData, &*nPeminjam)
+	case 8:
+		MeditPinjaman(&*nData, &*nPeminjam)
+	case 9:
 		menuadmin(&*nData, &*nPeminjam)
 	default:
 		fmt.Println("Maaf nomor yang anda pilih tidak ada, silahkan ketik ulang")
@@ -820,7 +1037,7 @@ func menupengembalian(nData *int, nPeminjam *int) {
 	fmt.Println("||===================||")
 	fmt.Println("1. \U0001f504 Pengembalian Buku")
 	fmt.Println("2. \U0001f6ab Hilang")
-	fmt.Println("3. \U0000fe0f Kembali")
+	fmt.Println("3. \U000025C0 Kembali")
 	fmt.Print("Pilihan Anda: ")
 	fmt.Scan(&pilih)
 	switch pilih {
@@ -838,15 +1055,58 @@ func menupengembalian(nData *int, nPeminjam *int) {
 	}
 }
 
+func hapusdatapeminjam(nData, nPeminjam *int) {
+	cls()
+	var nama string
+	var pilih,data int
+	if *nPeminjam == 0 {
+		fmt.Println("Maaf data peminjam anda masih kosong")
+		jedawaktu(5)
+		menupinjaman(&*nData, &*nPeminjam)
+	} else {
+		fmt.Print("Masukkan nama peminjam yang akan di hapus (cth: 'Fauzan .'):")
+		inputtext(&nama)
+		if ceknamapeminjam(*nPeminjam, nama) {
+			data = caridatapeminjam(*nPeminjam,nama)
+			cetakdatapeminjam(*nPeminjam,data)
+			for g:=0; g < datapeminjam[data].totalBukuDipinjam; g++ {
+				item[mencaridata(*nData,datapeminjam[data].Buku[g])].stok += 1
+			}
+			for i:=data; i < *nPeminjam; i++ {
+				datapeminjam[i] = datapeminjam[i+1]
+			}
+			*nPeminjam -= 1
+			jedawaktu(3)
+			fmt.Println("Berhasil Dihapus")
+			jedawaktu(3)
+			menupinjaman(&*nData,&*nPeminjam)
+		} else {
+			fmt.Println("Maaf Nama peminjam tidak ada")
+			fmt.Println("Apakah anda ingin menginputkannya kembali?")
+			fmt.Println("1. \U000025B6 Input kembali")
+			fmt.Println("2. \U000025C0 Kembali")
+			fmt.Print("Pilihan anda (1/2): ")
+			fmt.Scan(&pilih)
+			switch pilih {
+			case 1:
+				hapusdatapeminjam(&*nData, &*nPeminjam)
+			case 2:
+				menupinjaman(&*nData, &*nPeminjam)
+			}
+		}
+	}
+}
+
 func pengembalian(nData *int, nPeminjam *int) {
 	cls()
 	var pilih int
 	var nama string
 	var bulan, tahun, tanggal int
 	var denda int
-	fmt.Print("Nama peminjam: ")
-	fmt.Scan(&nama)
-	if ceknamapeminjam(nPeminjam, nama) {
+	var i int
+	fmt.Print("Nama peminjam (cth: 'Fauzan .'): ")
+	inputtext(&nama)
+	if ceknamapeminjam(*nPeminjam, nama) {
 		fmt.Print("\nTanggal Kembali: ")
 		fmt.Scan(&tanggal)
 		fmt.Print("\nBulan Kembali: ")
@@ -861,35 +1121,43 @@ func pengembalian(nData *int, nPeminjam *int) {
 			bulan -= 12
 			tahun += 1
 		}
-		if tanggal < datapeminjam[caridatapeminjam(*nPeminjam, nama)].TanggalKembali.tanggal && tanggal > datapeminjam[caridatapeminjam(*nPeminjam, nama)].TanggalPeminjaman.tanggal {
-			if bulan <= datapeminjam[caridatapeminjam(*nPeminjam, nama)].TanggalKembali.bulan {
-				if tahun <= datapeminjam[caridatapeminjam(*nPeminjam, nama)].TanggalKembali.tahun {
-					datapeminjam[caridatapeminjam(*nPeminjam, nama)].Status = "Done"
+		for i <= datapeminjam[caridatapeminjam(*nPeminjam, nama)].totalBukuDipinjam {
+			fmt.Println("Apakah buku ", datapeminjam[caridatapeminjam(*nPeminjam, nama)].Buku[i], " akan dikembalikan?")
+			fmt.Println("1. \U00002705 Iya")
+			fmt.Println("2. \U0000274c Tidak")
+			fmt.Print("Pilihan Anda (1/2): ")
+			fmt.Scan(&pilih)
+			if pilih == 1 {
+				item[mencaridata(*nData, datapeminjam[caridatapeminjam(*nPeminjam, nama)].Buku[i])].stok += 1
+				if i < 4 {
+					datapeminjam[caridatapeminjam(*nPeminjam, nama)].totalBukuDipinjam -= 1
+					datapeminjam[caridatapeminjam(*nPeminjam, nama)].Buku[i] = datapeminjam[caridatapeminjam(*nPeminjam, nama)].Buku[i+1]
+					denda += cekdenda(*nPeminjam, *nData, tanggal, bulan, tahun, i, nama)
 				} else {
-					for i := 0; i < datapeminjam[caridatapeminjam(*nPeminjam, nama)].totalBukuDipinjam; i++ {
-						denda += (item[mencaridata(*nData, datapeminjam[caridatapeminjam(*nPeminjam, nama)].Buku[i])].harga * 20) / 100
-					}
+					datapeminjam[caridatapeminjam(*nPeminjam, nama)].Buku[i] = ""
 				}
+				i++
+			} else if pilih == 2 {
+				i++
 			} else {
-				for i := 0; i < datapeminjam[caridatapeminjam(*nPeminjam, nama)].totalBukuDipinjam; i++ {
-					denda += (item[mencaridata(*nData, datapeminjam[caridatapeminjam(*nPeminjam, nama)].Buku[i])].harga * 20) / 100
-				}
-			}
-		} else {
-			for i := 0; i < datapeminjam[caridatapeminjam(*nPeminjam, nama)].totalBukuDipinjam; i++ {
-				denda += (item[mencaridata(*nData, datapeminjam[caridatapeminjam(*nPeminjam, nama)].Buku[i])].harga * 20) / 100
+				fmt.Println("Pilihan Anda Invalid")
+				jedawaktu(3)
 			}
 		}
 		if denda == 0 {
-
+			datapeminjam[caridatapeminjam(*nPeminjam, nama)].Status = "Done"
 		} else {
 			strukpembayaran(&denda)
+			datapeminjam[caridatapeminjam(*nPeminjam, nama)].Status = "Done"
 		}
+		menupengembalian(&*nData, &*nPeminjam)
 	} else {
+		cls()
 		fmt.Println("Maaf Nama peminjam tidak ada")
 		fmt.Println("Silahkan Untuk menginputkan dengan benar")
-		fmt.Println("1. Input kembali")
-		fmt.Println("2. Kembali")
+		fmt.Println("1. \U000025B6 Input kembali")
+		fmt.Println("2. \U000025C0 Kembali")
+		fmt.Print("Pilihan anda (1/2): ")
 		fmt.Scan(&pilih)
 		switch pilih {
 		case 1:
@@ -900,30 +1168,62 @@ func pengembalian(nData *int, nPeminjam *int) {
 	}
 }
 
+func cekdenda(nPeminjam, nData, tanggal, bulan, tahun, i int, nama string) int {
+	var denda int
+	if tanggal < datapeminjam[caridatapeminjam(nPeminjam, nama)].TanggalKembali.tanggal && tanggal > datapeminjam[caridatapeminjam(nPeminjam, nama)].TanggalPeminjaman.tanggal {
+		if bulan <= datapeminjam[caridatapeminjam(nPeminjam, nama)].TanggalKembali.bulan {
+			if tahun <= datapeminjam[caridatapeminjam(nPeminjam, nama)].TanggalKembali.tahun {
+				return 0
+			} else {
+				denda = (item[mencaridata(nData, datapeminjam[caridatapeminjam(nPeminjam, nama)].Buku[i])].harga * 20) / 100
+			}
+		} else {
+			denda = (item[mencaridata(nData, datapeminjam[caridatapeminjam(nPeminjam, nama)].Buku[i])].harga * 20) / 100
+		}
+	} else {
+		denda = (item[mencaridata(nData, datapeminjam[caridatapeminjam(nPeminjam, nama)].Buku[i])].harga * 20) / 100
+	}
+	return denda
+}
+
 func hilang(nData *int, nPeminjam *int) {
 	cls()
 	var nama string
 	var denda, pilih int
+	var i int = 0
 	fmt.Print("Nama peminjam: ")
-	fmt.Scan(&nama)
-	if ceknamapeminjam(nPeminjam, nama) {
-		for i := 0; i < datapeminjam[caridatapeminjam(*nPeminjam, nama)].totalBukuDipinjam; i++ {
-			fmt.Print("Apakah buku ", datapeminjam[caridatapeminjam(*nPeminjam, nama)].Buku[i], " hilang?")
-			fmt.Print("1. \U00002705 Iya")
-			fmt.Print("2. \U0000274c Tidak")
-			fmt.Print("Pilihan Anda: ")
+	inputtext(&nama)
+	if ceknamapeminjam(*nPeminjam, nama) {
+		for i < datapeminjam[caridatapeminjam(*nPeminjam, nama)].totalBukuDipinjam {
+			fmt.Println("Apakah buku ", datapeminjam[caridatapeminjam(*nPeminjam, nama)].Buku[i], " hilang?")
+			fmt.Println("1. \U00002705 Iya")
+			fmt.Println("2. \U0000274c Tidak")
+			fmt.Print("Pilihan Anda (1/2): ")
 			fmt.Scan(&pilih)
 			if pilih == 1 {
 				denda += item[mencaridata(*nData, datapeminjam[caridatapeminjam(*nPeminjam, nama)].Buku[i])].harga
+				if i < 4 {
+					datapeminjam[caridatapeminjam(*nPeminjam, nama)].totalBukuDipinjam -= 1
+					datapeminjam[caridatapeminjam(*nPeminjam, nama)].Buku[i] = datapeminjam[caridatapeminjam(*nPeminjam, nama)].Buku[i+1]
+				} else {
+					datapeminjam[caridatapeminjam(*nPeminjam, nama)].Buku[i] = ""
+				}
+				i++
+			} else if pilih == 2 {
+				i++
+			} else {
+				fmt.Println("Pilihan Anda Invalid")
+				jedawaktu(3)
 			}
 		}
 		strukpembayaran(&denda)
+		menupengembalian(&*nData, &*nPeminjam)
 	} else {
 		fmt.Println("Maaf Nama peminjam tidak ada")
 		fmt.Println("Silahkan Untuk menginputkan dengan benar")
-		fmt.Println("1. Input kembali")
-		fmt.Println("2. Kembali")
-		fmt.Print("Pilihan Anda: ")
+		fmt.Println("1. \U000025B6 Input kembali")
+		fmt.Println("2. \U000025C0 Kembali")
+		fmt.Print("Pilihan Anda (1/2): ")
 		fmt.Scan(&pilih)
 		switch pilih {
 		case 1:
@@ -935,26 +1235,32 @@ func hilang(nData *int, nPeminjam *int) {
 }
 
 func strukpembayaran(tagihan *int) {
+	cls()
 	var bayar int
 	fmt.Print("Silahkan untuk membayar sebanyak ", *tagihan, ": ")
 	fmt.Scan(&bayar)
 	if bayar == *tagihan {
 		fmt.Println("Lunas")
+		jedawaktu(3)
 	} else if bayar > *tagihan {
 		fmt.Println("Ini kembalian anda: ", bayar-*tagihan)
+		jedawaktu(3)
 	} else {
 		fmt.Println("Maaf uang anda kurang: ", *tagihan-bayar)
+		jedawaktu(3)
 		bayar = *tagihan - bayar
 		strukpembayaran(&bayar)
 	}
+	*tagihan = 0
 }
 
 func perpanjangan(nData *int, nPeminjam *int) {
+	cls()
 	var nama string
-	var hari int
+	var hari, pilih int
 	fmt.Print("Masukkan Nama saat anda meminjam buku: ")
-	fmt.Scan(&nama)
-	if ceknamapeminjam(nPeminjam, nama) {
+	inputtext(&nama)
+	if ceknamapeminjam(*nPeminjam, nama) {
 		fmt.Print("Masukkan jumlah perpanjangan hari: ")
 		fmt.Scan(&hari)
 		datapeminjam[caridatapeminjam(*nPeminjam, nama)].tarifharga += 5000 * hari
@@ -964,6 +1270,21 @@ func perpanjangan(nData *int, nPeminjam *int) {
 		} else {
 			datapeminjam[caridatapeminjam(*nPeminjam, nama)].TanggalKembali.tanggal += hari
 		}
+		strukpembayaran(&datapeminjam[caridatapeminjam(*nPeminjam, nama)].tarifharga)
+		menupinjaman(&*nData, &*nPeminjam)
+	} else {
+		fmt.Println("Maaf data peminjam tidak ada")
+		fmt.Println("Apakah Anda ingin menginputkan kembali?")
+		fmt.Println("1. Iya")
+		fmt.Println("2. Tidak")
+		fmt.Print("Pilihan Anda (1/2):")
+		fmt.Scan(&pilih)
+		switch pilih {
+		case 1:
+			perpanjangan(&*nData, &*nPeminjam)
+		case 2:
+			menupinjaman(&*nData, &*nPeminjam)
+		}
 	}
 }
 
@@ -971,14 +1292,14 @@ func pinjaman(nData *int, nPeminjam *int) {
 	cls()
 	var judul, nama string
 	var data, i, pilihan int
-	cetakdatabuku(&*nData, &*nPeminjam)
-	fmt.Print("\nNama (Akhiri dengan spasi .): ")
+	fmt.Print("\nNama Peminjam (cth: 'Fauzan .'): ")
 	inputtext(&nama)
-	if ceknamapeminjam(nPeminjam, nama) {
+	if ceknamapeminjam(*nPeminjam, nama) {
 		fmt.Println("Maaf, nama sudah dimiliki orang lain silahkan untuk menginput nama lain")
 		jedawaktu(5)
 		pinjaman(&*nData, &*nPeminjam)
 	} else {
+		cetakdatabuku(&*nData, &*nPeminjam)
 		fmt.Print("\nMau pinjam berapa buku (MAKS 5 Buku): ")
 		fmt.Scan(&data)
 		if data <= 5 {
@@ -996,6 +1317,7 @@ func pinjaman(nData *int, nPeminjam *int) {
 				datapeminjam[*nPeminjam].Status = "Dipinjam"
 				tarifharga(*nPeminjam)
 				strukPeminjaman(datapeminjam[*nPeminjam])
+				strukpembayaran(&datapeminjam[*nPeminjam].tarifharga)
 				*nPeminjam += 1
 				pengurutan(*nData)
 				menuadmin(&*nData, &*nPeminjam)
@@ -1004,8 +1326,9 @@ func pinjaman(nData *int, nPeminjam *int) {
 			cls()
 			fmt.Println("Maaf anda meminjam lebih dari batas")
 			fmt.Println("Apakah anda ingin menginput kembali?")
-			fmt.Println("1. Iya")
-			fmt.Println("2. Tidak,Kembali saja")
+			fmt.Println("1. \U00002705 Iya")
+			fmt.Println("2. \U000025C0 Tidak, Kembali saja")
+			fmt.Print("Pilihan Anda (1/2): ")
 			switch pilihan {
 			case 1:
 				pinjaman(&*nData, &*nPeminjam)
@@ -1018,11 +1341,11 @@ func pinjaman(nData *int, nPeminjam *int) {
 
 func tarifharga(data int) {
 	var hari int
-	fmt.Print("Masukkan batas waktu peminjaman: ")
+	fmt.Print("Masukkan berapa lama buku akan dipinjam (1/2/3/4/dsb): ")
 	fmt.Scan(&hari)
 	if hari <= 0 {
 		fmt.Println("Maaf, hari yang anda masukkan tidak valid!")
-		fmt.Println("Silahkan untuk menginput ulang kembali")
+		fmt.Println("Silahkan untuk menginput ulang")
 		tarifharga(data)
 	} else {
 		datapeminjam[data].tarifharga = hari * 5000
@@ -1038,8 +1361,6 @@ func tarifharga(data int) {
 				datapeminjam[data].TanggalKembali.tahun += 1
 			}
 		}
-		strukpembayaran(&datapeminjam[data].tarifharga)
-		datapeminjam[data].tarifharga = 0
 		cls()
 	}
 }
@@ -1047,9 +1368,7 @@ func tarifharga(data int) {
 func inputjudul(nData *int, nPeminjam *int, judul *string, i *int, data int) {
 	var pilih int
 	fmt.Print("Judul buku yang akan dipinjam (Akhiri dengan spasi .): ")
-	*judul = ""
 	inputtext(&*judul)
-	fmt.Print(*judul)
 	if cekjudul(*nData, *judul) && item[mencaridata(*nData, *judul)].stok > 0 {
 		datapeminjam[*nPeminjam].Buku[*i] = *judul
 		item[mencaridata(*nData, *judul)].rankterpinjam += 1
@@ -1060,7 +1379,7 @@ func inputjudul(nData *int, nPeminjam *int, judul *string, i *int, data int) {
 		fmt.Println("Apakah anda ingin menginputkan kembali?")
 		fmt.Println("1. \U00002705 Iya")
 		fmt.Println("2. \U0000274c Tidak")
-		fmt.Print("Pilihan Anda: ")
+		fmt.Print("Pilihan Anda (1/2): ")
 		fmt.Scan(&pilih)
 		switch pilih {
 		case 1:
@@ -1081,20 +1400,21 @@ func inputdate(nPeminjam *int) {
 
 func inputtanggal(nPeminjam *int) {
 	var temp int
-	fmt.Print("Tanggal : ")
+	fmt.Print("Tanggal Peminjaman (1/2/3/4..../31): ")
 	fmt.Scan(&temp)
 	if temp <= 31 && temp > 0 {
 		datapeminjam[*nPeminjam].TanggalPeminjaman.tanggal = temp
 	} else {
 		fmt.Println("Maaf tanggal yang anda inputkan invalid, silahkan inputkan ulang")
 		jedawaktu(5)
+		cls()
 		inputtanggal(&*nPeminjam)
 	}
 }
 
 func inputbulan(nPeminjam *int) {
 	var temp int
-	fmt.Print("\nBulan : ")
+	fmt.Print("\nBulan (cth: bulan januari dimasukkan '1'): ")
 	fmt.Scan(&temp)
 	if temp <= 12 && temp > 0 {
 		datapeminjam[*nPeminjam].TanggalPeminjaman.bulan = temp
@@ -1107,7 +1427,7 @@ func inputbulan(nPeminjam *int) {
 
 func inputtahun(nPeminjam *int) {
 	var temp int
-	fmt.Print("\nTahun : ")
+	fmt.Print("\nTahun (cth : '2005'): ")
 	fmt.Scan(&temp)
 	if temp > 0 {
 		datapeminjam[*nPeminjam].TanggalPeminjaman.tahun = temp
@@ -1167,7 +1487,7 @@ func menucaridatapinjaman(nData *int, nPeminjam *int) {
 	case 3:
 		menupinjaman(&*nData, &*nPeminjam)
 	default:
-		fmt.Println("Maaf nomor yang anda pilih tidak ada, silahkan untuk mengetik ulang")
+		fmt.Println("Maaf nomor yang anda pilih tidak ada, silahkan ketik ulang")
 		jedawaktu(3)
 		cls()
 		menucaridatapinjaman(&*nData, &*nPeminjam)
@@ -1177,16 +1497,20 @@ func menucaridatapinjaman(nData *int, nPeminjam *int) {
 func carinamapeminjam(nData *int, nPeminjam *int) {
 	var nama string
 	var pilih int
-	fmt.Print("Nama Peminjam: ")
-	fmt.Scan(&nama)
+	var wait string
+	fmt.Print("Nama Peminjam (Akhiri dengan spasi .): ")
+	inputtext(&nama)
 	fmt.Println()
-	if ceknamapeminjam(nPeminjam, nama) {
+	if ceknamapeminjam(*nPeminjam, nama) {
 		cetakdatapeminjam(*nPeminjam, caridatapeminjam(*nPeminjam, nama))
+		fmt.Print("Masukkan huruf apa saja dan enter untuk melanjutkan")
+		fmt.Scan(&wait)
+		menucaridatapinjaman(&*nData, &*nPeminjam)
 	} else {
 		fmt.Println("Maaf nama peminjam yang anda cari tidak ada")
-		fmt.Println("1. Cari nama lain")
-		fmt.Println("2. Kembali")
-		fmt.Print("Pilihan anda: ")
+		fmt.Println("1. \U0001f50d Cari nama lain")
+		fmt.Println("2. \U000025C0 Kembali")
+		fmt.Print("Pilihan anda (1/2): ")
 		fmt.Scan(&pilih)
 		switch pilih {
 		case 1:
@@ -1198,22 +1522,36 @@ func carinamapeminjam(nData *int, nPeminjam *int) {
 }
 
 func carinomorpeminjam(nData *int, nPeminjam *int) {
-	var nomor int
+	cls()
+	var nomor, pilih int
+	var wait string
 	fmt.Print("Nomor Peminjam: ")
 	fmt.Scan(&nomor)
 	fmt.Println()
-	if nomor >= *nPeminjam {
+	if nomor-1 >= *nPeminjam {
 		fmt.Println("Maaf Nomor yang anda berikan tidak ada")
-		jedawaktu(5)
-		carinomorpeminjam(&*nData, &*nPeminjam)
+		fmt.Println("Apakah anda ingin menginputkan nya kembali?")
+		fmt.Println("1. Iya")
+		fmt.Println("2. Kembali")
+		fmt.Print("Pilihan Anda (1/2):")
+		fmt.Scan(&pilih)
+		switch pilih {
+		case 1:
+			carinomorpeminjam(&*nData, &*nPeminjam)
+		case 2:
+			menucaridatapinjaman(&*nData, &*nPeminjam)
+		}
 	} else {
 		cetakdatapeminjam(*nPeminjam, nomor-1)
+		fmt.Print("Masukkan huruf apa saja untuk melanjutkan...")
+		fmt.Scan(&wait)
+		menucaridatapinjaman(&*nData, &*nPeminjam)
 	}
 }
 
-func ceknamapeminjam(nPeminjam *int, nama string) bool {
+func ceknamapeminjam(nPeminjam int, nama string) bool {
 	var cek bool = false
-	for i := 0; i < *nPeminjam; i++ {
+	for i := 0; i < nPeminjam; i++ {
 		if nama == datapeminjam[i].Namapeminjam {
 			cek = true
 		}
@@ -1235,7 +1573,7 @@ func caridatapeminjam(nPeminjam int, nama string) int {
 func datapinjaman(nData *int, nPeminjam *int) {
 	var wait int
 	if *nPeminjam == 0 {
-		fmt.Println("\x1b[35mMaaf, data peminjam Anda masih kosong, harap tunggu hingga ada yang meminjam\x1b[0m")
+		fmt.Println("\x1b[35mMaaf, data peminjam Anda masih kosong\x1b[0m")
 		jedawaktu(5)
 		menuadmin(&*nData, &*nPeminjam)
 	} else {
@@ -1247,7 +1585,7 @@ func datapinjaman(nData *int, nPeminjam *int) {
 		}
 		fmt.Print("Ketikkan huruf apa saja untuk melanjutkan")
 		fmt.Scan(&wait)
-		menuadmin(&*nData, &*nPeminjam)
+		menupinjaman(&*nData, &*nPeminjam)
 	}
 }
 
@@ -1286,27 +1624,132 @@ func Terfavorit(nData, nPeminjam *int) {
 	for i := 0; i < 5; i++ {
 		cetakbuku(i)
 	}
-	fmt.Print("Masukkan apa saja untuk lanjut...")
+	fmt.Print("Ketikkan huruf apa saja untuk melanjutkan")
 	fmt.Scan(&wait)
 	menupinjaman(&*nData, &*nPeminjam)
 }
 
-// ! ===============================================
-
-// ! FUNGSI PANDUAN
-
-func panduan(nData *int, nPeminjam *int) {
-	fmt.Println("Tata Cara Pengguna")
-	fmt.Println("Tata Cara Pengguna")
-	fmt.Println("Tata Cara Pengguna")
-	fmt.Println("Tata Cara Pengguna")
-	fmt.Println("Tata Cara Pengguna")
-	fmt.Println("Tata Cara Pengguna")
-	fmt.Println("Tata Cara Pengguna")
-	menuadmin(&*nData, &*nPeminjam)
+func MeditPinjaman(nData, nPeminjam *int) {
+	cls()
+	var judul string
+	var pilih, data int
+	fmt.Print("Masukkan Nama peminjam yang ingin di ubah (cth: 'Seiki .'):")
+	inputtext(&judul)
+	if ceknamapeminjam(*nPeminjam, judul) {
+		data = caridatapeminjam(*nPeminjam, judul)
+		editPinjaman(&*nData, &*nPeminjam, data)
+	} else {
+		fmt.Println("Maaf judul buku yang anda masukkan tidak ada")
+		fmt.Println("1. \U000025B6 Input Kembali")
+		fmt.Println("2. \U000025C0 Kembali")
+		fmt.Print("\x1b[36mPilihan Anda (1/2): \x1b[0m")
+		fmt.Scan(&pilih)
+		switch pilih {
+		case 1:
+			MeditPinjaman(&*nData, &*nPeminjam)
+		case 2:
+			menupinjaman(&*nData, &*nPeminjam)
+		}
+	}
 }
 
-//! =============================================
+func editPinjaman(nData, nPeminjam *int, data int) {
+	cls()
+	var pilih int
+	fmt.Println("Pilih apa yang akan di ubah:")
+	fmt.Println("1. Nama Peminjam")
+	fmt.Println("2. Buku Yang dipinjam")
+	fmt.Println("3. Tanggal Pinjaman")
+	fmt.Println("4. Semua")
+	fmt.Println("5. Kembali")
+	fmt.Print("Pilihan Anda (1/2/3/4/5/6): ")
+	fmt.Scan(&pilih)
+	switch pilih {
+	case 1:
+		editnamapeminjam(&*nData, &*nPeminjam, data)
+		editPinjaman(&*nData, &*nPeminjam, data)
+	case 2:
+		editbukudipinjam(&*nData, &*nPeminjam, data)
+		editPinjaman(&*nData, &*nPeminjam, data)
+	case 3:
+		edittanggalpeminjaman(&*nData, &*nPeminjam, data)
+		editPinjaman(&*nData, &*nPeminjam, data)
+	case 4:
+		editnamapeminjam(&*nData, &*nPeminjam, data)
+		editbukudipinjam(&*nData, &*nPeminjam, data)
+		edittanggalpeminjaman(&*nData, &*nPeminjam, data)
+		editPinjaman(&*nData, &*nPeminjam, data)
+	case 5:
+		menupinjaman(&*nData, &*nPeminjam)
+	default:
+		fmt.Println("Maaf nomor yang anda pilih tidak ada, silahkan ketik ulang")
+		jedawaktu(3)
+		cls()
+		editPinjaman(&*nData, &*nPeminjam, data)
+	}
+}
+
+func editnamapeminjam(nData, nPeminjam *int, data int) {
+	cls()
+	var nama string
+	fmt.Print("Masukkan nama peminjam yang baru (cth: 'Imaachan .'):")
+	inputtext(&nama)
+	datapeminjam[data].Namapeminjam = nama
+	cls()
+	fmt.Println("Data peminjam baru: ")
+	cetakdatapeminjam(*nPeminjam, data)
+	jedawaktu(3)
+}
+
+func editbukudipinjam(nData, nPeminjam *int, data int) {
+	cls()
+	var buku string
+	var pilih int
+	var status bool = true
+	for i := 0; i < datapeminjam[data].totalBukuDipinjam; i++ {
+		fmt.Println("apakah buku ", datapeminjam[data].Buku[i], " akan diubah?")
+		fmt.Println("1. Iya")
+		fmt.Println("2. Tidak")
+		fmt.Print("Pilihan Anda (1/2):")
+		fmt.Scan(&pilih)
+		if pilih == 1 {
+			for status {
+				cetakdatabuku(&*nData, &*nPeminjam)
+				fmt.Print("Masukkan judul buku baru yang akan dipinjam (cth: 'Danur .'): ")
+				inputtext(&buku)
+				if cekjudul(*nData, buku) {
+					item[mencaridata(*nData, datapeminjam[data].Buku[i])].stok += 1
+					datapeminjam[data].Buku[i] = buku
+					item[mencaridata(*nData, datapeminjam[data].Buku[i])].stok -= 1
+					cls()
+					fmt.Println("Data peminjam baru:")
+					cetakdatapeminjam(*nPeminjam, data)
+					status = false
+				} else {
+					fmt.Print("Maaf judul yang anda masukkan tidak ada, silahkan inputkan kembali")
+				}
+				jedawaktu(3)
+				cls()
+			}
+			status = true
+		} else {
+
+		}
+	}
+}
+
+func edittanggalpeminjaman(nData, nPeminjam *int, data int) {
+	cls()
+	inputdate(&data)
+	tarifharga(data)
+	datapeminjam[data].tarifharga = 0
+	cls()
+	fmt.Println("Data peminjam baru:")
+	cetakdatapeminjam(*nPeminjam, data)
+	jedawaktu(3)
+}
+
+// ! ===============================================
 
 // ! Fungsi Pembagus/Cantik
 
@@ -1316,16 +1759,9 @@ func panduan(nData *int, nPeminjam *int) {
 // }
 
 func cls() { // ? Procedure menghapus atau clear terminal dengan package os
-	if runtime.GOOS == "windows" {
-		cmd := exec.Command("cmd", "/c", "cls")
-		cmd.Stdout = os.Stdout
-		cmd.Run()
-	} else {
-		cmd := exec.Command("clear")
-		cmd.Stdout = os.Stdout
-		cmd.Run()
-
-	}
+	cmd := exec.Command("cmd", "/c", "cls")
+	cmd.Stdout = os.Stdout
+	cmd.Run()
 }
 
 func drawProgressBar(progress float64) {
@@ -1437,10 +1873,7 @@ func cetakStruk(p PinjamanBuku, namaFile string) error {
 }
 
 func logoaplikasi() {
-	// 	░░░░┼░░░░░░░
-	// ░░░░░░░░░░░░
-	// ░░░░░░░░░░░┼
-	// ░░░░░░░░░░░░
+
 	var logo = []string{
 		"     +   .   *          + .     .    ",
 		"   .         .    ██    .    █     * ",
