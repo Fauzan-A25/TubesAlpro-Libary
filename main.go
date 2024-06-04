@@ -518,7 +518,6 @@ func cetakdatabuku(nData *int, nPeminjam *int) { // ? Procedure Mencetak data bu
 	var ascending bool = true
 	var pilih int
 	var lanjut bool = false
-	selectionsortKategori(*nData)
 	for !lanjut {
 		cls()
 		fmt.Println("Pilih metode untuk tampilan data buku")
@@ -538,6 +537,7 @@ func cetakdatabuku(nData *int, nPeminjam *int) { // ? Procedure Mencetak data bu
 		}
 	}
 	inserctionsortJudul(*nData, ascending)
+	selectionsortKategori(*nData)
 	cls()
 	fmt.Println("||============================||")
 	fmt.Println("||         DATA BUKU          ||")
@@ -573,7 +573,7 @@ func convertkategori(i int) string { // ? Function mengembalikan var kategori in
 	} else if i == 3 {
 		return "\033[33m \U0001F3AD Novel\x1b[0m"
 	} else if i == 4 {
-		return "\x1b[34m \U0001F3EB Pelajaran : \x1b[0m"
+		return "\x1b[34m \U0001F3EB Pelajaran\x1b[0m"
 	} else {
 		return "Kategori yang anda masukkan tidak valid"
 	}
@@ -761,16 +761,16 @@ func editkategori(nData, nPeminjam *int, data int) {
 		switch kategori {
 		case "Cerpen":
 			item[data].kategori = 1
-			fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F4C3 [31m Cerpen\x1b[0m")
+			fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F4C3 \x1b[31mCerpen\x1b[0m")
 		case "Komik":
 			item[data].kategori = 2
-			fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F4AC [32m Komik\x1b[0m")
+			fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F4AC \x1b[32mKomik\x1b[0m")
 		case "Novel":
 			item[data].kategori = 3
-			fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F3AD [33m Novel\x1b[0m")
+			fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F3AD \x1b[33mNovel\x1b[0m")
 		case "Pelajaran":
 			item[data].kategori = 4
-			fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F3EB [34m Pelajaran\x1b[0m")
+			fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F3EB \x1b[34mPelajaran\x1b[0m")
 		}
 		cls()
 		fmt.Println("Buku baru:")
@@ -905,19 +905,19 @@ func menambahkan2(nData *int, nPeminjam *int, produk, banyakstok *int) { // ? Su
 			case "Cerpen":
 				lanjut = true
 				item[*nData].kategori = 1
-				fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F4C3 [32m Cerpen\x1b[0m")
+				fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F4C3 \x1b[32mCerpen\x1b[0m")
 			case "Komik":
 				lanjut = true
 				item[*nData].kategori = 2
-				fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F4AC [31m Komik\x1b[0m")
+				fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F4AC \x1b[31mKomik\x1b[0m")
 			case "Novel":
 				lanjut = true
 				item[*nData].kategori = 3
-				fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F3AD [33m Novel\x1b[0m")
+				fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F3AD \x1b[33mNovel\x1b[0m")
 			case "Pelajaran":
 				lanjut = true
 				item[*nData].kategori = 4
-				fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F3EB [34m Pelajaran\x1b[0m")
+				fmt.Println("\x1b[32mBerhasil disimpan, Dalam kategori \U0001F3EB \x1b[34mPelajaran\x1b[0m")
 			default:
 				fmt.Println("Gagal, tidak ada pilihan ", kategori, " didalam pilihan")
 				jedawaktu(3)
