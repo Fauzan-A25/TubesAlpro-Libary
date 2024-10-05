@@ -60,10 +60,6 @@ This project is suitable for anyone looking to develop a deeper understanding of
 
 Contributions are welcome! If you have suggestions, ideas, or bug reports, please open an issue or create a pull request.
 
-## 🛠️ License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
-
 ## 📧 Contact
 
 For any questions or further information, feel free to reach out:
