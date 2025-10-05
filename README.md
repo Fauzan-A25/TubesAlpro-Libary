@@ -1,13 +1,54 @@
-# Library Management System
+# 📚 Library Management System
 
-This repository contains the code for a **Library Management System** developed as part of a Programming Algorithms course project. The system is designed to streamline the process of managing books, members, and borrowing activities within a library.
+[![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?style=flat&logo=go)](https://golang.org)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-## 📚 Features
+> A comprehensive library management system built with Go, featuring book cataloging, member management, and automated borrowing workflows.
 
-- **Book Management**: Add, update, delete, and search for books in the library's collection.
-- **Member Management**: Manage library members, including adding, editing, and deleting member information.
-- **Borrowing System**: Manage book borrowing and returning processes, including tracking due dates and fines.
-- **Search Functionality**: Easily search for books and members using various criteria.
+## 📖 About The Project
+
+This Library Management System streamlines the daily operations of library staff by automating:
+- Book inventory and cataloging
+- Member registration and management
+- Borrowing and return processes with due date tracking
+- Fine calculation for overdue books
+- Search and filtering capabilities
+
+Built as part of an Algorithms and Programming course, this project demonstrates practical implementation of data structures (arrays, structs, sorting, searching) in a real-world application.
+
+## ✨ Features
+
+### 📚 Book Management
+- Add, update, and delete book records
+- Search books by title, author, ISBN, or category
+- Track book availability status
+- Manage multiple copies of the same book
+
+### 👥 Member Management
+- Register new library members
+- Update member information
+- View borrowing history per member
+- Member status tracking (active/inactive)
+
+### 📖 Borrowing System
+- Issue books with automatic due date calculation
+- Process book returns
+- Automated fine calculation for late returns
+- View all active borrowings
+
+### 🔍 Search & Reports
+- Advanced search with multiple criteria
+- Generate borrowing reports
+- Most borrowed books statistics
+- Member activity reports
+
+## 🛠️ Built With
+
+- **Language:** Go (Golang) 1.21+
+- **Data Structures:** Arrays, Structs, Sorting Algorithms
+- **Architecture:** Modular design with separation of concerns
+- **I/O:** Console-based interface with formatted output
 
 ## 📂 Folder Structure
 
@@ -20,9 +61,9 @@ This repository contains the code for a **Library Management System** developed 
 
 ## 🚀 Getting Started
 
-To get a local copy of the project up and running, follow these steps:
-
 ### Prerequisites
+
+Ensure you have Go installed on your machine:
 
 - **Go (Golang)**: Make sure you have Go installed on your machine. You can download it from [golang.org](https://golang.org/).
 
@@ -68,4 +109,4 @@ For any questions or further information, feel free to reach out:
 
 ---
 
-Made with ❤️ by Fauzan-A25
+Made by Fauzan-A25
